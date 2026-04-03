@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viral Post Finder Pro</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --input-bg: rgba(15, 23, 42, 0.5);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            width: 350px;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(34, 197, 94, 0.1) 0px, transparent 50%);
+            color: var(--text);
+            padding: 16px;
+            margin: 0;
+            user-select: none;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .notice-board {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(to right, #818cf8, #34d399);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+        }
+
+        input, select, textarea {
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            padding: 10px 12px;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        input::placeholder {
+            color: #475569;
+        }
+
+        label {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--info);
+            color: white;
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+            align-self: flex-start;
+            margin-top: 4px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            resize: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .pc-id-footer {
+            margin-top: 8px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .pc-id-container {
+            display: flex;
+            gap: 6px;
+        }
+
+        .pc-id-display {
+            flex: 1;
+            font-family: monospace;
+            font-weight: 700;
+            text-align: center;
+            color: var(--success);
+            background: rgba(34, 197, 94, 0.1);
+            border-color: rgba(34, 197, 94, 0.2);
+            padding: 6px;
+        }
+
+        .copy-id-btn {
+            width: auto;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            background: var(--warning);
+        }
+
+        .info-pill {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            color: var(--info);
+            margin-bottom: 4px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="/notice.png" alt="Notice Board" class="notice-board">
+            <h2>Viral Post Finder PRO</h2>
+        </div>
+
+        <div class="card">
+            <div class="section-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                Main Configuration
+            </div>
+            <div class="input-group">
+                <input type="number" id="minComments" value="20" placeholder="Minimum Comments">
+                <select id="detectionMethod">
+                    <option value="accurate">Method 1: Smart Accuracy Focus</option>
+                    <option value="robust">Method 2: Deep Context Scan</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                Optional Range Filters
+            </div>
+            <div class="input-group">
+                <div class="row">
+                    <input type="number" id="range1min" placeholder="R1 Min" style="width: 50%;">
+                    <input type="number" id="range1max" placeholder="R1 Max" style="width: 50%;">
+                </div>
+                <div class="row">
+                    <input type="number" id="range2min" placeholder="R2 Min" style="width: 50%;">
+                    <input type="number" id="range2max" placeholder="R2 Max" style="width: 50%;">
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="configDisplay">
+            <div class="section-title">Active Settings</div>
+            <div id="scanInfo1" class="info-pill">Main: Min 20</div>
+            <div id="scanInfo2" class="info-pill">Range 1: Not set</div>
+            <div id="scanInfo3" class="info-pill">Range 2: Not set</div>
+        </div>
+
+        <div class="row">
+            <button id="find" class="btn-primary" style="flex: 2;">Start Scanning</button>
+            <button id="stop" class="btn-danger" style="flex: 1;">Stop</button>
+        </div>
+
+        <div id="status" class="status-badge">Status: Idle</div>
+
+        <div class="card">
+            <textarea id="result" placeholder="Waiting for viral posts..." readonly></textarea>
+            <button id="copy" class="btn-ghost" style="margin-top: 8px; width: 100%;">Copy All Links</button>
+        </div>
+
+        <div class="pc-id-footer">
+            <div style="font-size: 0.65rem; color: var(--text-muted); text-align: center;">LICENSE ID (SEND TO ADMIN)</div>
+            <div class="pc-id-container">
+                <input type="text" id="pcIdDisplay" class="pc-id-display" readonly>
+                <button id="copyIdBtn" class="copy-id-btn">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
